@@ -19,4 +19,13 @@ class RecipientEmailValidationTest extends \Orchestra\Testbench\TestCase
         // if we get here we have a valid recipient
         $this->assertEquals("bob@healthendeavors.com", $recipient);
     }
+    
+    /**
+     * @expectedException \RuntimeException
+     */
+    public function testRecipientWithInValidEmailCannotBeAdded()
+    {
+        // a recipient
+        $recipient = new Recipient("nogood");
+    }
 }

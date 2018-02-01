@@ -4,6 +4,7 @@ namespace Endeavors\MaxMD\DirectUtil\Tests;
 
 use Endeavors\MaxMD\DirectUtil\Recipient;
 use Endeavors\MaxMD\DirectUtil\RecipientCollection;
+use Endeavors\MaxMD\DirectUtil\ValidRecipientCollection;
 
 class RecipientCollectionCreationTest extends \Orchestra\Testbench\TestCase
 {
@@ -25,19 +26,6 @@ class RecipientCollectionCreationTest extends \Orchestra\Testbench\TestCase
         }
     }
 
-    public function testCollectionCanBeMadeFromCustomRecipient()
-    {
-        $custom = [
-            "bob@healthendeavors.com"
-        ];
-
-        $recipients = RecipientCollection::create($custom, new CustomRecipient());
-
-        foreach($recipients->all() as $recipient) {
-            $this->assertInstanceOf(CustomRecipient::class, $recipient);
-        }
-    }
-
     public function testCollectionIgnoresExceptionsAndAddsValidEmails()
     {
         $emails = [
@@ -45,8 +33,14 @@ class RecipientCollectionCreationTest extends \Orchestra\Testbench\TestCase
             "reallybademail"
         ];
 
-        $recipients = RecipientCollection::create($emails);
+        $recipients = ValidRecipientCollection::create($emails);
+
+        foreach($recipients->all() as $recipient) {
+            $this->assertEquals($emails[0], $recipient);
+        }
+
+        foreach($recipients->all() as $recipient) {
+            $this->assertNotEquals($emails[1], $recipient);
+        }
     }
 }
-
-class CustomRecipient implements \Endeavors\MaxMD\DirectUtil\Contracts\IRecipient {}
