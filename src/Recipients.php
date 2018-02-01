@@ -12,8 +12,6 @@ class Recipients
             return (new RecipientValidator($args[0]))->$method();
         } elseif( strtolower($method) === "untrusted" ) {
             return (new RecipientValidator($args[0]))->$method();
-        } elseif( $method === "all" ) {
-            return (new RecipientValidator($args[0]))->all();
         }
     }
 }

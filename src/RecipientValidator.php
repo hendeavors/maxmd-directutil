@@ -50,11 +50,6 @@ class RecipientValidator
         return $invalids;
     }
 
-    public function all()
-    {
-
-    }
-
     protected function response()
     {
         // pre-validate the items to ensure a correct email is being sent
