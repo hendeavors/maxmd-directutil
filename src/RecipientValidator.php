@@ -52,17 +52,21 @@ class RecipientValidator
 
     protected function response()
     {
-        // pre-validate the items to ensure a correct email is being sent
-        $items = ValidRecipientCollection::create($this->items->get());
-        
-        $client = Client::DirectUtil();
+        if( Session::check() ) {
+            // pre-validate the items to ensure a correct email is being sent
+            $items = ValidRecipientCollection::create($this->items->get());
+            
+            $client = Client::DirectUtil();
 
-        $response = $client->ValidateRecipients([
-            "sessionId" => Session::getId(),
-            "ownerDirectAddress" => User::getInstance()->getUsername(),
-            "recipients" => $items->toArray()
-        ]);
+            $response = $client->ValidateRecipients([
+                "sessionId" => Session::getId(),
+                "ownerDirectAddress" => User::getInstance()->getUsername(),
+                "recipients" => $items->toArray()
+            ]);
 
-        return $response;
+            return $response;
+        }
+
+        throw new \Endeavors\MaxMD\Api\Auth\UnauthorizedAccessException("Your session is invalid or expired. Please authenticate with maxmd api.");
     }
 }

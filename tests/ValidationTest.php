@@ -56,7 +56,7 @@ class ValidationTest extends \Orchestra\Testbench\TestCase
         $this->assertCount(2, $recipients);
 
         foreach($recipients as $item) {
-            // not a trusted address
+            // trusted address
             $this->assertNotEquals("freddie@healthendeavors.direct.eval.md", $item);
             $this->assertNotEquals("stevejones1231224@healthendeavors.direct.eval.md", $item);
         }
