@@ -25,10 +25,16 @@ class RecipientValidator
         $valids = [];
 
         $response = $this->response();
-
-        foreach($response->return->recipients as $item) {
-            if ($item->trustRelation === "Trusted" ) {
-                $valids[] = $item->directAddress;
+        
+        if( is_array($response->return->recipients) ) {
+            foreach($response->return->recipients as $item) {
+                if ($item->trustRelation === "Trusted" ) {
+                    $valids[] = $item->directAddress;
+                }
+            }
+        } else {
+            if( $response->return->recipients->trustRelation === "Trusted" ) {
+                $valids[] = $response->return->recipients->directAddress;
             }
         }
 

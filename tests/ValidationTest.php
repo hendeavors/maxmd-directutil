@@ -61,4 +61,52 @@ class ValidationTest extends \Orchestra\Testbench\TestCase
             $this->assertNotEquals("stevejones1231224@healthendeavors.direct.eval.md", $item);
         }
     }
+
+    public function testNoTrustedRecipientsAreRecieved()
+    {
+        MaxMD::Login(env("MAXMD_APIUSERNAME"),env("MAXMD_APIPASSWORD"));
+
+        User::freshLogin("freddie@healthendeavors.direct.eval.md", "smith");
+
+        $recipients = Recipients::trusted([
+            "adam@healthendeavors.com",
+            "adam.david.rodriguez@gmail.com",
+            "bad"
+        ]);
+        
+        // untrusted recipients will be 2
+        // bad is pre-validated
+        $this->assertCount(0, $recipients);
+    }
+
+    public function testNoSingleUntrustedRecipientIsRecieved()
+    {
+        MaxMD::Login(env("MAXMD_APIUSERNAME"),env("MAXMD_APIPASSWORD"));
+
+        User::freshLogin("freddie@healthendeavors.direct.eval.md", "smith");
+
+        $recipients = Recipients::trusted([
+            "adam@healthendeavors.com"
+        ]);
+        
+        // untrusted recipients will be 2
+        // bad is pre-validated
+        $this->assertCount(0, $recipients);
+    }
+    
+    // failing
+    public function testNoSingleTrustedRecipientIsRecieved()
+    {
+        MaxMD::Login(env("MAXMD_APIUSERNAME"),env("MAXMD_APIPASSWORD"));
+
+        User::freshLogin("freddie@healthendeavors.direct.eval.md", "smith");
+
+        $recipients = Recipients::unTrusted([
+            "stevejones1231224@healthendeavors.direct.eval.md"
+        ]);
+        
+        // untrusted recipients will be 2
+        // bad is pre-validated
+        $this->assertCount(0, $recipients);
+    }
 }
