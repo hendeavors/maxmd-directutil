@@ -89,12 +89,10 @@ class ValidationTest extends \Orchestra\Testbench\TestCase
             "adam@healthendeavors.com"
         ]);
         
-        // untrusted recipients will be 2
-        // bad is pre-validated
+        // trusted recipients will be 0
         $this->assertCount(0, $recipients);
     }
     
-    // failing
     public function testNoSingleTrustedRecipientIsRecieved()
     {
         MaxMD::Login(env("MAXMD_APIUSERNAME"),env("MAXMD_APIPASSWORD"));
@@ -105,8 +103,7 @@ class ValidationTest extends \Orchestra\Testbench\TestCase
             "stevejones1231224@healthendeavors.direct.eval.md"
         ]);
         
-        // untrusted recipients will be 2
-        // bad is pre-validated
+        // untrusted recipients will be 0
         $this->assertCount(0, $recipients);
     }
 }

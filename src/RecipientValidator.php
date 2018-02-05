@@ -47,9 +47,15 @@ class RecipientValidator
 
         $response = $this->response();
 
-        foreach($response->return->recipients as $item) {
-            if ($item->trustRelation !== "Trusted" ) {
-                $invalids[] = $item->directAddress;
+        if( is_array($response->return->recipients) ) {
+            foreach($response->return->recipients as $item) {
+                if ($item->trustRelation !== "Trusted" ) {
+                    $invalids[] = $item->directAddress;
+                }
+            }
+        } else {
+            if( $response->return->recipients->trustRelation !== "Trusted" ) {
+                $invalids[] = $response->return->recipients->directAddress;
             }
         }
 
