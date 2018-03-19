@@ -23,7 +23,7 @@
     "require" : {
         "endeavors/maxmd-apiauth": "0.1.*@dev",
         "endeavors/maxmd-support": "^1.0",
-        "endeavors/support-vo": "^1.2",
+        "endeavors/support-vo": "^2.0",
         "endeavors/maxmd-message": "^2.1"
     },
     "require-dev": {
