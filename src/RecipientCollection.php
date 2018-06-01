@@ -8,6 +8,8 @@ class RecipientCollection
 
     protected $inValidRecipients = [];
 
+    protected $ValidRecipients = [];
+
     public static function create(array $recipients)
     {
         $instance = new static;
@@ -35,33 +37,14 @@ class RecipientCollection
 
     public function valid()
     {
-        $valids = [];
-        
-        foreach($this->recipients as $recipient) {
-            if ( $recipient instanceof Contracts\IRecipient ) {
-                // check the instance implementation of isValid
-                if($recipient->isValid()) {
-                    $valids[] = $recipient;
-                }
-            }
-        }
-        
-        $this->recipients = $valids;
-        
+        $this->recipients = $this->validRecipients;
+
         return $this;
     }
 
     protected function inValid()
     {
-        $invalids = [];
-
-        foreach($this->recipients as $recipient) {
-            if ( $recipient instanceof InvalidRecipient ) {
-                $invalids[] = $recipient;
-            }
-        }
-
-        $this->recipients = $invalids;
+        $this->recipients = $this->inValidRecipients;
 
         return $this;
     }
@@ -90,6 +73,13 @@ class RecipientCollection
         try {
             $result = new Recipient($value);
         } finally {
+
+            if( $result->isValid() ) {
+                $this->validRecipients[] = $result;
+            } else {
+                $this->inValidRecipients[] = $result;
+            }
+
             return $result;
         }
     }
