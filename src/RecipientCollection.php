@@ -8,7 +8,7 @@ class RecipientCollection
 
     protected $inValidRecipients = [];
 
-    protected $ValidRecipients = [];
+    protected $validRecipients = [];
 
     public static function create(array $recipients)
     {
