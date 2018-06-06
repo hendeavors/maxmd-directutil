@@ -25,7 +25,10 @@ class RecipientValidator
         $valids = [];
 
         $response = $this->response();
-        
+
+        if( 99 === (int)$response->return->code )
+            return $valids;
+
         if( is_array($response->return->recipients) ) {
             foreach($response->return->recipients as $item) {
                 if ($item->trustRelation === "Trusted" ) {
@@ -47,6 +50,9 @@ class RecipientValidator
 
         $response = $this->response();
 
+        if( 99 === (int)$response->return->code )
+            return $invalids;
+
         if( is_array($response->return->recipients) ) {
             foreach($response->return->recipients as $item) {
                 if ($item->trustRelation !== "Trusted" ) {
@@ -67,7 +73,7 @@ class RecipientValidator
         if( Session::check() ) {
             // pre-validate the items to ensure a correct email is being sent
             $items = ValidRecipientCollection::create($this->items->get());
-            
+
             $client = Client::DirectUtil();
 
             $response = $client->ValidateRecipients([
