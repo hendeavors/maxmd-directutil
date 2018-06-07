@@ -50,7 +50,7 @@ class ValidationTest extends \Orchestra\Testbench\TestCase
             "adam.david.rodriguez@gmail.com",
             "bad"
         ]);
-        
+
         // untrusted recipients will be 2
         // bad is pre-validated
         $this->assertCount(2, $recipients);
@@ -73,7 +73,7 @@ class ValidationTest extends \Orchestra\Testbench\TestCase
             "adam.david.rodriguez@gmail.com",
             "bad"
         ]);
-        
+
         // untrusted recipients will be 2
         // bad is pre-validated
         $this->assertCount(0, $recipients);
@@ -88,11 +88,11 @@ class ValidationTest extends \Orchestra\Testbench\TestCase
         $recipients = Recipients::trusted([
             "adam@healthendeavors.com"
         ]);
-        
+
         // trusted recipients will be 0
         $this->assertCount(0, $recipients);
     }
-    
+
     public function testNoSingleTrustedRecipientIsRecieved()
     {
         MaxMD::Login(env("MAXMD_APIUSERNAME"),env("MAXMD_APIPASSWORD"));
@@ -102,7 +102,35 @@ class ValidationTest extends \Orchestra\Testbench\TestCase
         $recipients = Recipients::unTrusted([
             "stevejones1231224@healthendeavors.direct.eval.md"
         ]);
-        
+
+        // untrusted recipients will be 0
+        $this->assertCount(0, $recipients);
+    }
+
+    public function testNoSingleBadTrustedRecipientIsRecieved()
+    {
+        MaxMD::Login(env("MAXMD_APIUSERNAME"),env("MAXMD_APIPASSWORD"));
+
+        User::freshLogin("freddie@healthendeavors.direct.eval.md", "smith");
+
+        $recipients = Recipients::trusted([
+            "bad"
+        ]);
+
+        // trusted recipients will be 0
+        $this->assertCount(0, $recipients);
+    }
+
+    public function testNoSingleBadUnTrustedRecipientIsRecieved()
+    {
+        MaxMD::Login(env("MAXMD_APIUSERNAME"),env("MAXMD_APIPASSWORD"));
+
+        User::freshLogin("freddie@healthendeavors.direct.eval.md", "smith");
+
+        $recipients = Recipients::unTrusted([
+            "bad"
+        ]);
+
         // untrusted recipients will be 0
         $this->assertCount(0, $recipients);
     }
