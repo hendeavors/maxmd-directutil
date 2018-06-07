@@ -26,7 +26,12 @@ class RecipientValidator
 
         $response = $this->response();
 
+        // something is wrong with maxmd
         if( 99 === (int)$response->return->code )
+            return $valids;
+
+        // no recipients
+        if(10 === (int)$response->return->code )
             return $valids;
 
         if( is_array($response->return->recipients) ) {
@@ -50,7 +55,11 @@ class RecipientValidator
 
         $response = $this->response();
 
+        // something is wrong with maxmd
         if( 99 === (int)$response->return->code )
+            return $invalids;
+        // no recipients
+        if(10 === (int)$response->return->code )
             return $invalids;
 
         if( is_array($response->return->recipients) ) {
