@@ -12,7 +12,7 @@ class Recipients
 
     private function __construct($args)
     {
-        $this->args = $args;
+        $this->args = $this->checkArguments($args) ?? [[]];
     }
 
     private static function getInstance()
@@ -23,6 +23,8 @@ class Recipients
     private static function instance($args)
     {
         if(!empty($args)) {
+            static::$instance = new static($args);
+        } elseif(null === static::getInstance()) {
             static::$instance = new static($args);
         }
 
@@ -46,5 +48,13 @@ class Recipients
             $validator->trusted();
             return $validator->getErrorMessage();
         }
+    }
+
+    protected function checkArguments($args)
+    {
+        if(empty($args)) 
+            return null;
+
+        return $args;
     }
 }

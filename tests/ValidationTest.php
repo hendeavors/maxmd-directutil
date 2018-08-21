@@ -142,7 +142,7 @@ class ValidationTest extends \Orchestra\Testbench\TestCase
         $this->assertCount(0, $recipients);
     }
 
-    public function testEmptyTrustedRecipientsUsesPreviousArguments()
+    public function testEmptyTrustedRecipientsUsesPreviousArgumentsIfNotEmpty()
     {
         MaxMD::Login(env("MAXMD_APIUSERNAME"),env("MAXMD_APIPASSWORD"));
 
