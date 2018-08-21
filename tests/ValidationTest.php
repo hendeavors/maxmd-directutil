@@ -117,6 +117,13 @@ class ValidationTest extends \Orchestra\Testbench\TestCase
             "bad"
         ]);
 
+        $this->assertNotNull(Recipients::trustedErrorCode());
+
+        $this->assertEquals(Recipients::trustedErrorCode(), 10);
+
+        // invalid api argument or argument missing 
+        $this->assertEquals(Recipients::trustedErrorMessage(), "recipients: missing");
+
         // trusted recipients will be 0
         $this->assertCount(0, $recipients);
     }
@@ -133,5 +140,40 @@ class ValidationTest extends \Orchestra\Testbench\TestCase
 
         // untrusted recipients will be 0
         $this->assertCount(0, $recipients);
+    }
+
+    public function testEmptyTrustedRecipientsUsesPreviousArguments()
+    {
+        MaxMD::Login(env("MAXMD_APIUSERNAME"),env("MAXMD_APIPASSWORD"));
+
+        User::freshLogin("freddie@healthendeavors.direct.eval.md", "smith");
+
+        Recipients::trusted([
+            "bad"
+        ]);
+
+        $recipients = Recipients::trusted();
+
+        $this->assertNotNull(Recipients::trustedErrorCode());
+
+        $this->assertEquals(Recipients::trustedErrorCode(), 10);
+
+        // invalid api argument or argument missing 
+        $this->assertEquals(Recipients::trustedErrorMessage(), "recipients: missing");
+
+        // trusted recipients will be 0
+        $this->assertCount(0, $recipients);
+
+        Recipients::trusted([
+            "freddie@healthendeavors.direct.eval.md",
+            "stevejones1231224@healthendeavors.direct.eval.md",
+            "adam@healthendeavors.com",
+            "adam.david.rodriguez@gmail.com",
+            "bad"
+        ]);
+
+        $recipients = Recipients::trusted();
+
+        $this->assertCount(2, $recipients);
     }
 }

@@ -12,6 +12,10 @@ use Endeavors\MaxMD\Message\User;
  */
 class RecipientValidator
 {
+    private $errorCode;
+
+    private $errorMessage;
+
     public function __construct($items)
     {
         $this->items = VO\ModernArray::create($items);
@@ -26,13 +30,14 @@ class RecipientValidator
 
         $response = $this->response();
 
-        // something is wrong with maxmd
-        if( 99 === (int)$response->return->code )
-            return $valids;
+        // no valid recipients sent or something is wrong with maxmd
+        if( $this->isError($response) ) {
+            $this->errorCode = (int)$response->return->code;
 
-        // no recipients
-        if(10 === (int)$response->return->code )
+            $this->errorMessage = $response->return->message;
+
             return $valids;
+        }
 
         if( is_array($response->return->recipients) ) {
             foreach($response->return->recipients as $item) {
@@ -77,6 +82,16 @@ class RecipientValidator
         return $invalids;
     }
 
+    public function getErrorCode()
+    {
+        return $this->errorCode;
+    }
+
+    public function getErrorMessage()
+    {
+        return $this->errorMessage;
+    }
+
     protected function response()
     {
         if( Session::check() ) {
@@ -95,5 +110,10 @@ class RecipientValidator
         }
 
         throw new \Endeavors\MaxMD\Api\Auth\UnauthorizedAccessException("Your session is invalid or expired. Please authenticate with maxmd api.");
+    }
+
+    protected function isError($response)
+    {
+        return 10 === (int)$response->return->code || 99 === (int)$response->return->code;
     }
 }
