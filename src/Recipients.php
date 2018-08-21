@@ -10,6 +10,8 @@ class Recipients
 
     private $args;
 
+    private $validator;
+
     private function __construct($args)
     {
         $this->args = $this->checkArguments($args) ?? [[]];
@@ -36,17 +38,19 @@ class Recipients
         $instance = static::instance($args);
 
         if( $method === "trusted" ) {
-            return (new RecipientValidator($instance->args[0]))->$method();
+            $validator = (new RecipientValidator($instance->args[0]));
+
+            $results = $validator->$method();
+
+            $instance->cacheValidatorInstance($validator);
+
+            return $results;
         } elseif( strtolower($method) === "untrusted" ) {
             return (new RecipientValidator($args[0]))->$method();
         } elseif( strtolower($method) === "trustederrorcode" ) {
-            $validator = (new RecipientValidator($instance->args[0]));
-            $validator->trusted();
-            return $validator->getErrorCode();
+            return $instance->getValidator()->getErrorCode();
         } elseif( strtolower($method) === "trustederrormessage" ) {
-            $validator = (new RecipientValidator($instance->args[0]));
-            $validator->trusted();
-            return $validator->getErrorMessage();
+            return $instance->getValidator()->getErrorMessage();
         }
     }
 
@@ -56,5 +60,15 @@ class Recipients
             return null;
 
         return $args;
+    }
+
+    protected function getValidator()
+    {
+        return $this->validator;
+    }
+
+    protected function cacheValidatorInstance($validator)
+    {
+        $this->validator = $validator;
     }
 }
