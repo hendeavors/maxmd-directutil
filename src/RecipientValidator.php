@@ -29,9 +29,10 @@ class RecipientValidator
         $valids = [];
 
         $response = $this->response();
+        //dd($response->return);
 
         // no valid recipients sent or something is wrong with maxmd
-        if( $this->isError($response) ) {
+        if( $response->errors() ) {
             $this->errorCode = (int)$response->return->code;
 
             $this->errorMessage = $response->return->message;
@@ -106,7 +107,7 @@ class RecipientValidator
                 "recipients" => $items->toArray()
             ]);
 
-            return $response;
+            return ValidatorResponse::create($response);
         }
 
         throw new \Endeavors\MaxMD\Api\Auth\UnauthorizedAccessException("Your session is invalid or expired. Please authenticate with maxmd api.");

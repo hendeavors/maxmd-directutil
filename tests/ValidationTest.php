@@ -103,8 +103,8 @@ class ValidationTest extends \Orchestra\Testbench\TestCase
             "stevejones1231224@healthendeavors.direct.eval.md"
         ]);
 
-        // untrusted recipients will be 0
-        $this->assertCount(0, $recipients);
+        // stevejones is now untrusted(12/5/2018) recipients will be 1
+        $this->assertCount(1, $recipients);
     }
 
     public function testNoSingleBadTrustedRecipientIsRecieved()
