@@ -6,13 +6,8 @@ use Endeavors\MaxMD\DirectUtil\Recipient;
 use Endeavors\MaxMD\DirectUtil\RecipientCollection;
 use Endeavors\MaxMD\DirectUtil\ValidRecipientCollection;
 
-class RecipientCollectionCreationTest extends \Orchestra\Testbench\TestCase
+class RecipientCollectionCreationTest extends TestCase
 {
-    public function setUp()
-    {
-        parent::setUp();
-    }
-
     public function testCollectionCanBeMadeFromDefaultRecipient()
     {
         $default = [

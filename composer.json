@@ -20,18 +20,32 @@
             "Endeavors\\MaxMD\\DirectUtil\\Tests\\": "tests/"
         }
     },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/bpedroza/maxmd-support.git"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/bpedroza/maxmd-apiauth.git"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/bpedroza/maxmd-message.git"
+        }
+    ],
     "require" : {
-        "endeavors/maxmd-apiauth": "0.1.*@dev",
-        "endeavors/maxmd-support": "^1.0",
+        "endeavors/maxmd-apiauth": "support-version-dev",
+        "endeavors/maxmd-support": "developer-options-dev",
         "endeavors/support-vo": "^2.0",
-        "endeavors/maxmd-message": "^2.1"
+        "endeavors/maxmd-message": "version-updates-dev"
     },
     "require-dev": {
-        "orchestra/testbench": "3.2.*"
+        "phpunit/phpunit": "^7.0"
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "0.1.x-dev"
+            "dev-develop": "0.2.x-dev"
         }
     }
 }

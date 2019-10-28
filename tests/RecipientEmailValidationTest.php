@@ -5,13 +5,8 @@ namespace Endeavors\MaxMD\DirectUtil\Tests;
 use Endeavors\MaxMD\DirectUtil\Recipient;
 use Endeavors\MaxMD\DirectUtil\Recipients;
 
-class RecipientEmailValidationTest extends \Orchestra\Testbench\TestCase
+class RecipientEmailValidationTest extends TestCase
 {
-    public function setUp()
-    {
-        parent::setUp();
-    }
-
     public function testRecipientWithValidEmailCanBeAdded()
     {
         // a recipient
@@ -19,7 +14,7 @@ class RecipientEmailValidationTest extends \Orchestra\Testbench\TestCase
         // if we get here we have a valid recipient
         $this->assertEquals("bob@healthendeavors.com", $recipient);
     }
-    
+
     /**
      * @expectedException \RuntimeException
      */
