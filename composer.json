@@ -24,14 +24,14 @@
         "endeavors/maxmd-apiauth": "0.1.*@dev",
         "endeavors/maxmd-support": "^1.0",
         "endeavors/support-vo": "^2.0",
-        "endeavors/maxmd-message": "^2.1"
+        "endeavors/maxmd-message": "^3.0"
     },
     "require-dev": {
         "orchestra/testbench": "3.2.*"
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "0.1.x-dev"
+            "dev-master": "0.2.x-dev"
         }
     }
 }
