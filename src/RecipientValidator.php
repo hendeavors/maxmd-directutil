@@ -6,6 +6,7 @@ use Endeavors\Support\VO;
 use Endeavors\MaxMD\Support\Client;
 use Endeavors\MaxMD\Api\Auth\Session;
 use Endeavors\MaxMD\Message\User;
+use Endeavors\MaxMD\Api\Auth\UnauthorizedAccessException;
 
 /**
  * Validate the recipient using MaxMD
@@ -29,8 +30,6 @@ class RecipientValidator
         $valids = [];
 
         $response = $this->response();
-        //dd($response->return);
-
         // no valid recipients sent or something is wrong with maxmd
         if( $response->errors() ) {
             $this->errorCode = (int)$response->return->code;
@@ -110,7 +109,7 @@ class RecipientValidator
             return ValidatorResponse::create($response);
         }
 
-        throw new \Endeavors\MaxMD\Api\Auth\UnauthorizedAccessException("Your session is invalid or expired. Please authenticate with maxmd api.");
+        throw new UnauthorizedAccessException("Your session is invalid or expired. Please authenticate with maxmd api.");
     }
 
     protected function isError($response)
