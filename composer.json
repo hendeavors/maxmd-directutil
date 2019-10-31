@@ -22,9 +22,9 @@
     },
     "require" : {
         "endeavors/maxmd-apiauth": "0.1.*@dev",
-        "endeavors/maxmd-support": "dev-develop",
+        "endeavors/maxmd-support": "^1.0",
         "endeavors/support-vo": "^2.0",
-        "endeavors/maxmd-message": "dev-develop"
+        "endeavors/maxmd-message": "^3.0"
     },
     "require-dev": {
         "orchestra/testbench": "3.2.*"
