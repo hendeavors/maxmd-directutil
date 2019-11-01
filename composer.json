@@ -28,10 +28,5 @@
     },
     "require-dev": {
         "orchestra/testbench": "3.2.*"
-    },
-    "extra": {
-        "branch-alias": {
-            "dev-master": "0.3.x-dev"
-        }
     }
 }
