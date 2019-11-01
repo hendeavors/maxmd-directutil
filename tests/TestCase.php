@@ -13,10 +13,4 @@ class TestCase extends BaseTestCase
         parent::setUp();
         Domains::setDevelopmentMode(true);
     }
-
-    protected function freshLogin($user, $pass)
-    {
-        User::logout();
-        User::login($user, $pass);
-    }
 }

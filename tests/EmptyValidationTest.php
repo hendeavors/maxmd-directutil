@@ -12,7 +12,7 @@ class EmptyValidationTest extends TestCase
     {
         MaxMD::Login(getenv("MAXMD_APIUSERNAME"),getenv("MAXMD_APIPASSWORD"));
 
-        User::freshLogin("freddie@healthendeavors.direct.eval.md", "smith");
+        User::freshLogin("freddie@". getenv('MAXMD_DOMAIN'), "smith");
 
         Recipients::trusted();
 

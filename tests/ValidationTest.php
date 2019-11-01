@@ -12,7 +12,7 @@ class ValidationTest extends TestCase
     {
         MaxMD::Login(getenv("MAXMD_APIUSERNAME"),getenv("MAXMD_APIPASSWORD"));
 
-        $this->freshLogin("freddie@" . getenv('MAXMD_DOMAIN'), "smith");
+        User::freshLogin("freddie@" . getenv('MAXMD_DOMAIN'), "smith");
 
         $recipients = Recipients::trusted([
             "freddie@" . getenv('MAXMD_DOMAIN'),
@@ -36,7 +36,7 @@ class ValidationTest extends TestCase
     {
         MaxMD::Login(getenv("MAXMD_APIUSERNAME"),getenv("MAXMD_APIPASSWORD"));
 
-        $this->freshLogin("freddie@" . getenv('MAXMD_DOMAIN'), "smith");
+        User::freshLogin("freddie@" . getenv('MAXMD_DOMAIN'), "smith");
 
         $recipients = Recipients::unTrusted([
             "freddie@" . getenv('MAXMD_DOMAIN'),
@@ -61,7 +61,7 @@ class ValidationTest extends TestCase
     {
         MaxMD::Login(getenv("MAXMD_APIUSERNAME"),getenv("MAXMD_APIPASSWORD"));
 
-        $this->freshLogin("freddie@" . getenv('MAXMD_DOMAIN'), "smith");
+        User::freshLogin("freddie@" . getenv('MAXMD_DOMAIN'), "smith");
 
         $recipients = Recipients::trusted([
             "adam@healthendeavors.com",
@@ -78,7 +78,7 @@ class ValidationTest extends TestCase
     {
         MaxMD::Login(getenv("MAXMD_APIUSERNAME"),getenv("MAXMD_APIPASSWORD"));
 
-        $this->freshLogin("freddie@" . getenv('MAXMD_DOMAIN'), "smith");
+        User::freshLogin("freddie@" . getenv('MAXMD_DOMAIN'), "smith");
 
         $recipients = Recipients::trusted([
             "adam@healthendeavors.com"
@@ -92,7 +92,7 @@ class ValidationTest extends TestCase
     {
         MaxMD::Login(getenv("MAXMD_APIUSERNAME"),getenv("MAXMD_APIPASSWORD"));
 
-        $this->freshLogin("freddie@". getenv('MAXMD_DOMAIN'), "smith");
+        User::freshLogin("freddie@". getenv('MAXMD_DOMAIN'), "smith");
 
         $recipients = Recipients::unTrusted([
             "stevejones1231224@" . getenv('MAXMD_DOMAIN')
@@ -106,7 +106,7 @@ class ValidationTest extends TestCase
     {
         MaxMD::Login(getenv("MAXMD_APIUSERNAME"),getenv("MAXMD_APIPASSWORD"));
 
-        User::freshLogin("freddie@healthendeavors.direct.eval.md", "smith");
+        User::freshLogin("freddie@". getenv('MAXMD_DOMAIN'), "smith");
 
         $recipients = Recipients::trusted([
             "bad"
@@ -127,7 +127,7 @@ class ValidationTest extends TestCase
     {
         MaxMD::Login(getenv("MAXMD_APIUSERNAME"),getenv("MAXMD_APIPASSWORD"));
 
-        User::freshLogin("freddie@healthendeavors.direct.eval.md", "smith");
+        User::freshLogin("freddie@". getenv('MAXMD_DOMAIN'), "smith");
 
         $recipients = Recipients::unTrusted([
             "bad"
@@ -141,7 +141,7 @@ class ValidationTest extends TestCase
     {
         MaxMD::Login(getenv("MAXMD_APIUSERNAME"),getenv("MAXMD_APIPASSWORD"));
 
-        User::freshLogin("freddie@healthendeavors.direct.eval.md", "smith");
+        User::freshLogin("freddie@". getenv('MAXMD_DOMAIN'), "smith");
 
         Recipients::trusted([
             "bad"
@@ -160,8 +160,8 @@ class ValidationTest extends TestCase
         $this->assertCount(0, $recipients);
 
         Recipients::trusted([
-            "freddie@healthendeavors.direct.eval.md",
-            "stevejones1231224@healthendeavors.direct.eval.md",
+            "freddie@". getenv('MAXMD_DOMAIN'),
+            "stevejones1231224@" . getenv('MAXMD_DOMAIN'),
             "adam@healthendeavors.com",
             "adam.david.rodriguez@gmail.com",
             "bad"
