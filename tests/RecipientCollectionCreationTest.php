@@ -38,4 +38,16 @@ class RecipientCollectionCreationTest extends TestCase
             $this->assertNotEquals($emails[1], $recipient);
         }
     }
+
+    public function testCollectionWithAllBadEmail()
+    {
+        $emails = [
+            "onereallybademail",
+            "reallybademail"
+        ];
+
+        $recipients = ValidRecipientCollection::create($emails);
+
+        $this->assertCount(0, $recipients->all());
+    }
 }

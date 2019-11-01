@@ -98,7 +98,77 @@ class ValidationTest extends TestCase
             "stevejones1231224@" . getenv('MAXMD_DOMAIN')
         ]);
 
+        // stevejones is now untrusted(12/5/2018) recipients will be 1
+        $this->assertCount(1, $recipients);
+    }
+
+    public function testNoSingleBadTrustedRecipientIsRecieved()
+    {
+        MaxMD::Login(getenv("MAXMD_APIUSERNAME"),getenv("MAXMD_APIPASSWORD"));
+
+        User::freshLogin("freddie@healthendeavors.direct.eval.md", "smith");
+
+        $recipients = Recipients::trusted([
+            "bad"
+        ]);
+
+        $this->assertNotNull(Recipients::trustedErrorCode());
+
+        $this->assertEquals(Recipients::trustedErrorCode(), 10);
+
+        // invalid api argument or argument missing
+        $this->assertEquals(Recipients::trustedErrorMessage(), "recipients: missing");
+
+        // trusted recipients will be 0
+        $this->assertCount(0, $recipients);
+    }
+
+    public function testNoSingleBadUnTrustedRecipientIsRecieved()
+    {
+        MaxMD::Login(getenv("MAXMD_APIUSERNAME"),getenv("MAXMD_APIPASSWORD"));
+
+        User::freshLogin("freddie@healthendeavors.direct.eval.md", "smith");
+
+        $recipients = Recipients::unTrusted([
+            "bad"
+        ]);
+
         // untrusted recipients will be 0
         $this->assertCount(0, $recipients);
+    }
+
+    public function testEmptyTrustedRecipientsUsesPreviousArgumentsIfNotEmpty()
+    {
+        MaxMD::Login(getenv("MAXMD_APIUSERNAME"),getenv("MAXMD_APIPASSWORD"));
+
+        User::freshLogin("freddie@healthendeavors.direct.eval.md", "smith");
+
+        Recipients::trusted([
+            "bad"
+        ]);
+
+        $recipients = Recipients::trusted();
+
+        $this->assertNotNull(Recipients::trustedErrorCode());
+
+        $this->assertEquals(Recipients::trustedErrorCode(), 10);
+
+        // invalid api argument or argument missing
+        $this->assertEquals(Recipients::trustedErrorMessage(), "recipients: missing");
+
+        // trusted recipients will be 0
+        $this->assertCount(0, $recipients);
+
+        Recipients::trusted([
+            "freddie@healthendeavors.direct.eval.md",
+            "stevejones1231224@healthendeavors.direct.eval.md",
+            "adam@healthendeavors.com",
+            "adam.david.rodriguez@gmail.com",
+            "bad"
+        ]);
+
+        $recipients = Recipients::trusted();
+
+        $this->assertCount(2, $recipients);
     }
 }
