@@ -6,22 +6,17 @@ use Endeavors\MaxMD\DirectUtil\Recipients;
 use Endeavors\MaxMD\Api\Auth\MaxMD;
 use Endeavors\MaxMD\Message\User;
 
-class ValidationTest extends \Orchestra\Testbench\TestCase
+class ValidationTest extends TestCase
 {
-    public function setUp()
-    {
-        parent::setUp();
-    }
-
     public function testOnlyValidRecipientsAreRetrieved()
     {
-        MaxMD::Login(env("MAXMD_APIUSERNAME"),env("MAXMD_APIPASSWORD"));
+        MaxMD::Login(getenv("MAXMD_APIUSERNAME"),getenv("MAXMD_APIPASSWORD"));
 
-        User::freshLogin("freddie@healthendeavors.direct.eval.md", "smith");
+        User::freshLogin("freddie@" . getenv('MAXMD_DOMAIN'), "smith");
 
         $recipients = Recipients::trusted([
-            "freddie@healthendeavors.direct.eval.md",
-            "stevejones1231224@healthendeavors.direct.eval.md",
+            "freddie@" . getenv('MAXMD_DOMAIN'),
+            "stevejones1231224@" . getenv('MAXMD_DOMAIN'),
             "adam@healthendeavors.com",
             "adam.david.rodriguez@gmail.com",
             "bad"
@@ -39,13 +34,13 @@ class ValidationTest extends \Orchestra\Testbench\TestCase
 
     public function testOnlyInvalidRecipientsAreRetrieved()
     {
-        MaxMD::Login(env("MAXMD_APIUSERNAME"),env("MAXMD_APIPASSWORD"));
+        MaxMD::Login(getenv("MAXMD_APIUSERNAME"),getenv("MAXMD_APIPASSWORD"));
 
-        User::freshLogin("freddie@healthendeavors.direct.eval.md", "smith");
+        User::freshLogin("freddie@" . getenv('MAXMD_DOMAIN'), "smith");
 
         $recipients = Recipients::unTrusted([
-            "freddie@healthendeavors.direct.eval.md",
-            "stevejones1231224@healthendeavors.direct.eval.md",
+            "freddie@" . getenv('MAXMD_DOMAIN'),
+            "stevejones1231224@" . getenv('MAXMD_DOMAIN'),
             "adam@healthendeavors.com",
             "adam.david.rodriguez@gmail.com",
             "bad"
@@ -57,16 +52,16 @@ class ValidationTest extends \Orchestra\Testbench\TestCase
 
         foreach($recipients as $item) {
             // trusted address
-            $this->assertNotEquals("freddie@healthendeavors.direct.eval.md", $item);
-            $this->assertNotEquals("stevejones1231224@healthendeavors.direct.eval.md", $item);
+            $this->assertNotEquals("freddie@" . getenv('MAXMD_DOMAIN'), $item);
+            $this->assertNotEquals("stevejones1231224@" . getenv('MAXMD_DOMAIN'), $item);
         }
     }
 
     public function testNoTrustedRecipientsAreRecieved()
     {
-        MaxMD::Login(env("MAXMD_APIUSERNAME"),env("MAXMD_APIPASSWORD"));
+        MaxMD::Login(getenv("MAXMD_APIUSERNAME"),getenv("MAXMD_APIPASSWORD"));
 
-        User::freshLogin("freddie@healthendeavors.direct.eval.md", "smith");
+        User::freshLogin("freddie@" . getenv('MAXMD_DOMAIN'), "smith");
 
         $recipients = Recipients::trusted([
             "adam@healthendeavors.com",
@@ -81,9 +76,9 @@ class ValidationTest extends \Orchestra\Testbench\TestCase
 
     public function testNoSingleUntrustedRecipientIsRecieved()
     {
-        MaxMD::Login(env("MAXMD_APIUSERNAME"),env("MAXMD_APIPASSWORD"));
+        MaxMD::Login(getenv("MAXMD_APIUSERNAME"),getenv("MAXMD_APIPASSWORD"));
 
-        User::freshLogin("freddie@healthendeavors.direct.eval.md", "smith");
+        User::freshLogin("freddie@" . getenv('MAXMD_DOMAIN'), "smith");
 
         $recipients = Recipients::trusted([
             "adam@healthendeavors.com"
@@ -95,12 +90,12 @@ class ValidationTest extends \Orchestra\Testbench\TestCase
 
     public function testNoSingleTrustedRecipientIsRecieved()
     {
-        MaxMD::Login(env("MAXMD_APIUSERNAME"),env("MAXMD_APIPASSWORD"));
+        MaxMD::Login(getenv("MAXMD_APIUSERNAME"),getenv("MAXMD_APIPASSWORD"));
 
-        User::freshLogin("freddie@healthendeavors.direct.eval.md", "smith");
+        User::freshLogin("freddie@". getenv('MAXMD_DOMAIN'), "smith");
 
         $recipients = Recipients::unTrusted([
-            "stevejones1231224@healthendeavors.direct.eval.md"
+            "stevejones1231224@" . getenv('MAXMD_DOMAIN')
         ]);
 
         // stevejones is now untrusted(12/5/2018) recipients will be 1
@@ -109,9 +104,9 @@ class ValidationTest extends \Orchestra\Testbench\TestCase
 
     public function testNoSingleBadTrustedRecipientIsRecieved()
     {
-        MaxMD::Login(env("MAXMD_APIUSERNAME"),env("MAXMD_APIPASSWORD"));
+        MaxMD::Login(getenv("MAXMD_APIUSERNAME"),getenv("MAXMD_APIPASSWORD"));
 
-        User::freshLogin("freddie@healthendeavors.direct.eval.md", "smith");
+        User::freshLogin("freddie@". getenv('MAXMD_DOMAIN'), "smith");
 
         $recipients = Recipients::trusted([
             "bad"
@@ -121,7 +116,7 @@ class ValidationTest extends \Orchestra\Testbench\TestCase
 
         $this->assertEquals(Recipients::trustedErrorCode(), 10);
 
-        // invalid api argument or argument missing 
+        // invalid api argument or argument missing
         $this->assertEquals(Recipients::trustedErrorMessage(), "recipients: missing");
 
         // trusted recipients will be 0
@@ -130,9 +125,9 @@ class ValidationTest extends \Orchestra\Testbench\TestCase
 
     public function testNoSingleBadUnTrustedRecipientIsRecieved()
     {
-        MaxMD::Login(env("MAXMD_APIUSERNAME"),env("MAXMD_APIPASSWORD"));
+        MaxMD::Login(getenv("MAXMD_APIUSERNAME"),getenv("MAXMD_APIPASSWORD"));
 
-        User::freshLogin("freddie@healthendeavors.direct.eval.md", "smith");
+        User::freshLogin("freddie@". getenv('MAXMD_DOMAIN'), "smith");
 
         $recipients = Recipients::unTrusted([
             "bad"
@@ -144,9 +139,9 @@ class ValidationTest extends \Orchestra\Testbench\TestCase
 
     public function testEmptyTrustedRecipientsUsesPreviousArgumentsIfNotEmpty()
     {
-        MaxMD::Login(env("MAXMD_APIUSERNAME"),env("MAXMD_APIPASSWORD"));
+        MaxMD::Login(getenv("MAXMD_APIUSERNAME"),getenv("MAXMD_APIPASSWORD"));
 
-        User::freshLogin("freddie@healthendeavors.direct.eval.md", "smith");
+        User::freshLogin("freddie@". getenv('MAXMD_DOMAIN'), "smith");
 
         Recipients::trusted([
             "bad"
@@ -158,15 +153,15 @@ class ValidationTest extends \Orchestra\Testbench\TestCase
 
         $this->assertEquals(Recipients::trustedErrorCode(), 10);
 
-        // invalid api argument or argument missing 
+        // invalid api argument or argument missing
         $this->assertEquals(Recipients::trustedErrorMessage(), "recipients: missing");
 
         // trusted recipients will be 0
         $this->assertCount(0, $recipients);
 
         Recipients::trusted([
-            "freddie@healthendeavors.direct.eval.md",
-            "stevejones1231224@healthendeavors.direct.eval.md",
+            "freddie@". getenv('MAXMD_DOMAIN'),
+            "stevejones1231224@" . getenv('MAXMD_DOMAIN'),
             "adam@healthendeavors.com",
             "adam.david.rodriguez@gmail.com",
             "bad"

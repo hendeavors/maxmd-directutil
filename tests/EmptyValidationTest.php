@@ -6,18 +6,13 @@ use Endeavors\MaxMD\DirectUtil\Recipients;
 use Endeavors\MaxMD\Api\Auth\MaxMD;
 use Endeavors\MaxMD\Message\User;
 
-class EmptyValidationTest extends \Orchestra\Testbench\TestCase
+class EmptyValidationTest extends TestCase
 {
-    public function setUp()
-    {
-        parent::setUp();
-    }
-
     public function testEmptyTrustedRecipientsGivesEmptyResponse()
     {
-        MaxMD::Login(env("MAXMD_APIUSERNAME"),env("MAXMD_APIPASSWORD"));
+        MaxMD::Login(getenv("MAXMD_APIUSERNAME"),getenv("MAXMD_APIPASSWORD"));
 
-        User::freshLogin("freddie@healthendeavors.direct.eval.md", "smith");
+        User::freshLogin("freddie@". getenv('MAXMD_DOMAIN'), "smith");
 
         Recipients::trusted();
 
